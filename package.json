@@ -1,0 +1,29 @@
+{
+  "name": "spa-server",
+  "version": "0.0.1",
+  "description": "a http server for simple page application apps development",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/busyfruit/spa-server.git"
+  },
+  "keywords": [
+    "simple page apps",
+    "gulp",
+    "grunt",
+    "web server",
+    "node"
+  ],
+  "author": "busyfruit",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/busyfruit/spa-server/issues"
+  },
+  "dependencies": {
+    "split": "~1.0.0",
+    "through2": "~2.0.0"
+  }
+}

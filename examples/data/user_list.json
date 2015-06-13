@@ -1,0 +1,14 @@
+{
+	"list": [
+		{
+			"id": 123,
+			"uname": "busyfruit",
+			"email": "shxliu0801@gmail.com"
+		},
+		{
+			"id": 456,
+			"uname": "zhangsan",
+			"email": "zhangsan456@gmail.com"
+		}
+	]
+}
