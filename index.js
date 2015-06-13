@@ -82,6 +82,8 @@ function handleJSONRequest () {
 		}, function (cb) {
 			if (!jsonPath) {
 				next();
+			} else {
+				this.push(jsonPath);
 			}
 			cb();
 		});
@@ -99,6 +101,9 @@ function handleJSONRequest () {
 			var jsonPath = chunk.toString('utf8');
 			var exists = fs.existsSync(jsonPath);
 			if (exists) {
+				res.writeHead(200, {
+					'Content-Type': 'application/json'
+				});
 				fs.createReadStream(jsonPath).pipe(res);
 			} else {
 				res.writeHead(404);
