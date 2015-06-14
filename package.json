@@ -1,5 +1,5 @@
 {
-  "name": "spa-server",
+  "name": "spable-server",
   "version": "0.0.1",
   "description": "a http server for simple page application apps development",
   "main": "index.js",
