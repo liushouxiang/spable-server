@@ -47,6 +47,7 @@ function handleStaticRequest () {
 		}
 		var pathname = url.parse(req.url).pathname;
 		var extname = path.extname(pathname).substr(1);
+		pathname = path.join(config.webroot, pathname);
 		if (mime[extname]) {
 			fs.exists(pathname, function (exists) {
 				if (exists) {
@@ -94,11 +95,17 @@ function handleJSONRequest () {
 			next(err);
 			return;
 		}
-		fs.createReadStream(config.serverConfDir)
+		if (!fs.existsSync(config.conf)) {
+			var err = new Error('can not find config file, please check!');
+			next(err);
+			return;
+		}
+		fs.createReadStream(config.conf)
 		.pipe(split())
 		.pipe(match(req.url, next))
 		.pipe(through2(function (chunk, enc, cb) {
 			var jsonPath = chunk.toString('utf8');
+			jsonPath = path.join(config.webroot, jsonPath);
 			var exists = fs.existsSync(jsonPath);
 			if (exists) {
 				res.writeHead(200, {
@@ -120,9 +127,10 @@ function handleEntryRequest (err, req, res, next) {
 		return;
 	}
 	var extname = path.extname(config.entry).substr(1);
+	var pathname = path.join(config.webroot, config.entry);
 	if (extname === 'js') {
 		try {
-			var entry = require(config.entry);
+			var entry = require(pathname);
 			entry(req, res);
 		} catch (err) {
 			next(err);
@@ -132,7 +140,7 @@ function handleEntryRequest (err, req, res, next) {
 		res.writeHead(200, {
 			'Content-Type': 'text/html'
 		});
-		fs.createReadStream(config.entry).pipe(res);
+		fs.createReadStream(pathname).pipe(res);
 		next();
 	}
 }
@@ -148,14 +156,15 @@ function handleException (err, req, res) {
 var config;
 module.exports = function (options) {
 	config = options || {};
-	if (!config.serverConfDir) {
-		throw new Error('serverConfDir must be specified.');
+	if (!config.webroot) {
+		throw new Error('webroot must be specified.');
 		return;
 	}
-	if (!config.entry) {
-		throw new Error('entry must be specified.');
+	if (!config.conf) {
+		throw new Error('conf must be specified.');
 		return;
 	}
+	config.entry = config.entry || './index.html';
 	var server = new SPAServer();
 	server.use(handleStaticRequest());
 	server.use(handleJSONRequest());
