@@ -1,6 +1,6 @@
 {
   "name": "spable-server",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "a http server for simple page application apps development",
   "main": "index.js",
   "scripts": {
